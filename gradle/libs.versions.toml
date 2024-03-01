@@ -1,16 +1,17 @@
 [versions]
-minecraft = "1.11.2"
-yarn_build = "541"
+minecraft = "1.12"
+feather_mappings = "1.12+build.26"
 fabric_loader = "0.15.7"
 loom = "1.5-SNAPSHOT"
-legacy-looming = "1.5-SNAPSHOT"
+ploceus = "1.5-SNAPSHOT"
 vineflower = "1.10.0-SNAPSHOT"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+feather_mappings = { module = "net.ornithemc:feather", version.ref = "feather_mappings" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 vineflower = { module = "org.vineflower:vineflower", version.ref = "vineflower" }
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "loom" }
-legacy_looming = { id = "legacy-looming", version.ref = "legacy-looming" }
+ploceus = { id = "ploceus", version.ref = "ploceus" }
