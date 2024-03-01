@@ -13,8 +13,6 @@ base {
 
 repositories {
     maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots" }
-    // maven { url "https://jitpack.io" }
-    // flatDir { dirs "libs" }
 }
 
 loom {
@@ -26,10 +24,9 @@ loom {
     mixin {
         useLegacyMixinAp = false
     }
-    // legacyLooming {
-    //     intermediaryVersion = 1
-    // }
-    // runs.client.programArgs "--userProperties", "{}"
+    legacyLooming {
+        intermediaryVersion = 1
+    }
 }
 
 dependencies {
