@@ -32,7 +32,7 @@ public abstract class WorldMixin {
      * anonymous.
      *
      * <p>The simple name of an array is the simple name of the
-     * component type with "[]" appended.  In particular the simple
+     * component type with "[]" appended.  In particular, the simple
      * name of an array whose component type is anonymous is "[]".
      *
      * @return the simple name of the underlying class
@@ -40,13 +40,14 @@ public abstract class WorldMixin {
      */
     @Unique
     private String getRemappedSimpleName(Class<?> instance) {
-        if (instance.isArray())
-            return getRemappedSimpleName(instance.getComponentType())+"[]";
+        if (instance.isArray()) {
+            return getRemappedSimpleName(instance.getComponentType()) + "[]";
+        }
 
         String simpleName = getRemappedSimpleBinaryName(instance);
         if (simpleName == null) { // top level class
             simpleName = mappingResolver.unmapClassName("official", instance.getName());
-            return simpleName.substring(simpleName.lastIndexOf(".")+1); // strip the package name
+            return simpleName.substring(simpleName.lastIndexOf(".") + 1); // strip the package name
         }
         // According to JLS3 "Binary Compatibility" (13.1) the binary
         // name of non-package classes (not top level) is the binary
@@ -56,18 +57,16 @@ public abstract class WorldMixin {
         // (for anonymous classes): 1 or more digits.
 
         // Since getSimpleBinaryName() will strip the binary name of
-        // the immediatly enclosing class, we are now looking at a
+        // the immediately enclosing class, we are now looking at a
         // string that matches the regular expression "\$[0-9]*"
         // followed by a simple name (considering the simple of an
         // anonymous class to be the empty string).
 
         // Remove leading "\$[0-9]*" from the name
         int length = simpleName.length();
-        if (length < 1 || simpleName.charAt(0) != '$')
-            throw new InternalError("Malformed class name");
+        if (length < 1 || simpleName.charAt(0) != '$') throw new InternalError("Malformed class name");
         int index = 1;
-        while (index < length && isAsciiDigit(simpleName.charAt(index)))
-            index++;
+        while (index < length && isAsciiDigit(simpleName.charAt(index))) index++;
         // Eventually, this is the empty string iff this is an anonymous class
         return simpleName.substring(index);
     }
@@ -81,9 +80,9 @@ public abstract class WorldMixin {
     @Unique
     private String getRemappedSimpleBinaryName(Class<?> instance) {
         Class<?> enclosingClass = instance.getEnclosingClass();
-        if (enclosingClass == null) // top level class
+        if (enclosingClass == null) { // top level class
             return null;
-        // Otherwise, strip the enclosing class' name
+        } // Otherwise, strip the enclosing class' name
         try {
             // return getName().substring(enclosingClass.getName().length());
             return mappingResolver.unmapClassName("official", instance.getName()).substring(mappingResolver.unmapClassName("official", enclosingClass.getName()).length());
@@ -94,7 +93,8 @@ public abstract class WorldMixin {
 
     /**
      * Character.isDigit answers {@code true} to some non-ascii
-     * digits.  This one does not.
+     * digits.
+     * This one does not.
      */
     @Unique
     private static boolean isAsciiDigit(char c) {
