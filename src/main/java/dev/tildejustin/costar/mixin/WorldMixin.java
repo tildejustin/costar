@@ -6,14 +6,22 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 
+import java.util.*;
+
 @Mixin(World.class)
 public abstract class WorldMixin {
     @Unique
     private static final MappingResolver mappingResolver = FabricLoader.getInstance().getMappingResolver();
 
+    @Unique
+    private static final Map<Class<BlockEntity>, String> classToName = new HashMap<>();
+
     @Redirect(method = "tickEntities", at = @At(value = "INVOKE", target = "Ljava/lang/Class;getSimpleName()Ljava/lang/String;", remap = false))
     private String remapBlockEntityClassName(Class<BlockEntity> instance) {
-        return getRemappedSimpleName(instance);
+        // burn call to getSimpleName to keep unspecified the same size
+        // noinspection ResultOfMethodCallIgnored
+        instance.getSimpleName();
+        return classToName.computeIfAbsent(instance, this::getRemappedSimpleName);
     }
 
     // the following is edited from https://github.com/openjdk/jdk8/blob/6a383433a9f4661a96a90b2a4c7b5b9a85720031/jdk/src/share/classes/java/lang/Class.java#L1292-L1323
