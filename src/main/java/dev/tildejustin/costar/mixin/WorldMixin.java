@@ -14,14 +14,17 @@ public abstract class WorldMixin {
     private static final MappingResolver mappingResolver = FabricLoader.getInstance().getMappingResolver();
 
     @Unique
-    private static final Map<Class<BlockEntity>, String> classToName = new HashMap<>();
+    private static final Map<Class<BlockEntity>, String> remappedSimpleClassNameCache = new HashMap<>();
+
+    // ensures the method call is not optimized away
+    @Unique
+    public String sideEffectField;
 
     @Redirect(method = "tickEntities", at = @At(value = "INVOKE", target = "Ljava/lang/Class;getSimpleName()Ljava/lang/String;", remap = false))
     private String remapBlockEntityClassName(Class<BlockEntity> instance) {
         // burn call to getSimpleName to keep unspecified the same size
-        // noinspection ResultOfMethodCallIgnored
-        instance.getSimpleName();
-        return classToName.computeIfAbsent(instance, this::getRemappedSimpleName);
+        sideEffectField = instance.getSimpleName();
+        return remappedSimpleClassNameCache.computeIfAbsent(instance, this::getRemappedSimpleName);
     }
 
     // the following is edited from https://github.com/openjdk/jdk8/blob/6a383433a9f4661a96a90b2a4c7b5b9a85720031/jdk/src/share/classes/java/lang/Class.java#L1292-L1323
