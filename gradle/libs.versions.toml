@@ -1,10 +1,10 @@
 [versions]
 minecraft = "1.12"
-yarn_build = "536"
-fabric_loader = "0.15.7"
-loom = "1.5-SNAPSHOT"
-legacy-looming = "1.5-SNAPSHOT"
-vineflower = "1.10.0-SNAPSHOT"
+yarn_build = "542"
+fabric_loader = "0.15.11"
+loom = "1.6-SNAPSHOT"
+legacy-looming = "1.6-SNAPSHOT"
+vineflower = "1.11.0-SNAPSHOT"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
