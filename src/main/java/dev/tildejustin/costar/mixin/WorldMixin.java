@@ -24,7 +24,9 @@ public abstract class WorldMixin {
     private String remapBlockEntityClassName(Class<BlockEntity> instance) {
         // burn call to getSimpleName to keep unspecified the same size
         sideEffectField = instance.getSimpleName();
-        return remappedSimpleClassNameCache.computeIfAbsent(instance, this::getRemappedSimpleName);
+        synchronized (remappedSimpleClassNameCache) {
+            return remappedSimpleClassNameCache.computeIfAbsent(instance, this::getRemappedSimpleName);
+        }
     }
 
     // the following is edited from https://github.com/openjdk/jdk8/blob/6a383433a9f4661a96a90b2a4c7b5b9a85720031/jdk/src/share/classes/java/lang/Class.java#L1292-L1323
