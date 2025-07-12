@@ -11,10 +11,6 @@ base {
     archivesName = archives_name
 }
 
-repositories {
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots" }
-}
-
 loom {
     decompilers {
         vineflower {
@@ -33,7 +29,6 @@ dependencies {
     minecraft libs.minecraft
     mappings legacy.yarn(libs.versions.minecraft.get(), libs.versions.yarn.build.get())
     modImplementation libs.fabric.loader
-    vineflowerDecompilerClasspath libs.vineflower
 }
 
 processResources {
@@ -44,9 +39,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    if (JavaVersion.current().isJava9Compatible()) {
-        it.options.release.set(8)
-    }
+    it.options.release.set(8)
 }
 
 java {
